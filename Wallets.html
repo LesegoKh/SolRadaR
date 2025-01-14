@@ -1,3 +1,4 @@
+<!---->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Token rows will go here -->
+            <!-- My token rows  -->
         </tbody>
     </table>
 
@@ -61,17 +62,17 @@
                 const solBalance = await connection.getBalance(publicKey);
                 document.getElementById('solBalance').innerHTML = `<h5>SOL Balance: ${solBalance / solanaWeb3.LAMPORTS_PER_SOL} SOL</h5>`;
 
-                // Fetch all token accounts owned by the wallet
+                // Fetch all tokens
                 const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {});
                 console.log("Token Accounts:", tokenAccounts);
 
-                // Process each token account
+                
                 const memeCoins = [];
                 for (let account of tokenAccounts.value) {
                     const tokenAmount = account.account.data.parsed.info.tokenAmount;
                     const mintAddress = account.account.data.parsed.info.mint;
 
-                    // Fetch the metadata for this token from Pump.fun or another source
+                    //The mtadata here
                     const metadata = await fetchTokenMetadataFromPump(mintAddress);
 
                     memeCoins.push({
@@ -84,7 +85,7 @@
 
                 // Populate the table with meme coins
                 const tableBody = document.getElementById('coinsTable').querySelector('tbody');
-                tableBody.innerHTML = ''; // Clear existing rows
+                tableBody.innerHTML = ''; 
                 memeCoins.forEach(coin => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
