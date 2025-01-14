@@ -1,0 +1,6 @@
+[[headers]]
+  for = "/api/*"  # This applies to all routes starting with /api/
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"

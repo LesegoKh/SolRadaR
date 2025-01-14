@@ -1,0 +1,258 @@
+<!--Copyright IP Disclaimer: Property of BlockchainLabs PTY LTD 2024 subsidiary of Blockchain Economy SA (PTY) LTD 2018-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Web3 SDK package needed for blockchain data-->
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.73.0/lib/index.iife.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolRadaR</title>
+    <style>
+        
+        img { 
+            border-radius: 50%;
+            height:100px;
+            width:100px;
+        }
+        .coins {
+            
+            border: 2px solid whitesmoke;
+            border-radius: 35px;
+        }
+        .coins img {
+            height: 60px;
+            width: 60px;
+        }
+        .navbarNav {
+            
+            width:100%;
+            position:relative;
+        }
+        .nav-item a {
+            margin: 0px 20px;
+            width:100%;
+            display:inline-flex;
+            color:#fff;
+        }
+       /* Ticker styling */
+       .ticker-container {
+        background-color: #a1a6ac;
+        color: whitesmoke;
+        overflow: hidden;
+        position:relative;
+        white-space: nowrap;
+        font-size: 0.9rem;
+        padding: 5px 0;
+        z-index: 1000;
+       }
+
+       .ticker-wrapper {
+        display: flex;
+        animation: scroll-left 30s linear infinite;
+       }
+
+       .ticker-item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+       }
+
+       .ticker-item img {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        margin-right: 8px;
+       }
+
+       .price-up {
+        color: greenyellow;
+       }
+
+       .price-down {
+        color:red;
+       }
+
+       /* Ticker Animation Goes Here*/
+
+       @keyframes scroll-left {
+        from {
+            transform:translateX(100%);
+        }
+        to {
+            transform: translateX(-100%);
+        }
+       }
+    </style>
+</head>
+<body class="bg-dark text-light">
+    
+    <!--Ticker stripe goes here-->
+    <div class="ticker-container">
+        <div class="ticker-wrapper" id="ticker">
+            <!--Dyanamic results here-->
+        </div>
+        
+    </div>
+    <!--Blue Navbar & Bootstrap styling-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">SolRa>=R</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="  collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a href="Home.html">Home</a></li>
+                    <li class="nav-item"><a href="Wallets.html">Wallets</a></li>
+                    <li class="nav-item"><a href="Coins.html">Coins</a></li>
+                    <li class="nav-item"><a href="Creators.html">Creators</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--The Main Page Content Below-->
+        <div class="container mt-4">
+            <div class="text-center">
+                <!--Try SolRadaR Logo Hero/ round cropped-->
+            <img class=" img-fluid" src="./SolRaDAR (1).png" alt="Logo">
+        </div>
+    </div>
+    <!--Search Bar here-->
+        <div class="container mt-4">
+            <h4 class="text-center mb-3">Search Wallets</h4>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <form class="d-flex" id="searchForm">
+                        <input id="walletInput" type="text" class="form-control me-2" placeholder="Search by Wallet Address" required>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div><br>
+        <!--3 container row with New Coins-->
+        <div class="  container mt-8" id="walletInfo">
+            <h4 class="text-center">New Coins</h4><br>
+            <div class="row justify-content-center">
+                <div class="text-center coins col-4 col-md-4 col-lg-4">
+                    <img class="coin-logo img-fluid" src="https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png" alt="Coin_1">
+                    <h4>Coin </h4>
+                    <h4><i class="fa-solid fa-dollar-sign"></i></h4>
+                    <h4><i class="fa-solid fa-seedling"></i></h4>
+                </div>
+                <div class="text-center coins col-4 col-md-4 col-lg-4">
+                    <img class="coin-logo img-fluid" src="https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png" alt="Coin_1">
+                    <h4>Coin </h4>
+                    <h4> <i class="fa-solid fa-dollar-sign"></i></h4>
+                    <h4> <i class="fa-solid fa-seedling"></i></h4>
+                </div>
+                <div class="text-center coins col-4 col-md-4 col-lg-4">
+                    <img class="coin-logo img-fluid" src="https://upload.wikimedia.org/wikipedia/en/b/b9/Solana_logo.png" alt="Coin_1">
+                    <h4>Coin </h4>
+                    <h4><i class="fa-solid fa-dollar-sign"></i></h4>
+                    <h4><i class="fa-solid fa-seedling"></i></h4>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <!--Table here-->
+        <div class="container mt-4">
+            <h4 class="text-center">Whale Tracker</h4>
+            </div>
+        </div>
+    <div class="container mt-4">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th><i class="fa-solid fa-dollar"></i><br>Coin Name</th>
+                    <th><i class="fa-solid fa-crosshairs"></i><br>Win Rate</th>
+                    <th><i class="fa-solid fa-chart-line"></i><br>1-Day PnL</th>
+                    <th><i class="fa-solid fa-chart-line"></i><br>7-Day PnL</th>
+                    <th><i class="fa-solid fa-chart-line"></i><br>30-Day PnL</th>
+                    <th><i class="fa-solid fa-calculator"></i><br>Total Coin Transactions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><i class="fa-solid fa-dollar"></i>  Coin_1</td>
+                    <td>85%</td>
+                    <td>$500</td>
+                    <td>$1500</td>
+                    <td>$15000</td>
+                    <td>196</td>
+                </tr>
+                <tr>
+                    <td><i class="fa-solid fa-dollar"></i>  Coin_2</td>
+                    <td>95%</td>
+                    <td>$2500</td>
+                    <td>$3500</td>
+                    <td>$45000</td>
+                    <td>76</td>
+                </tr>
+                <tr>
+                    <td><i class="fa-solid fa-dollar"></i>  Coin_3</td>
+                    <td>65%</td>
+                    <td>$100</td>
+                    <td>$160</td>
+                    <td>$500</td>
+                    <td>16</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--Notifications-->
+    <div class="container mt-4">
+        <h5 class="text-center">Subscribe For Notifications</h5>
+        <form class="d-flex">
+            <input type="email" class="form-control me-2" placeholder="Enter your email address" required>
+            <button class="btn btn-success" type="submit">Subscribe</button>
+        </form>
+    </div>
+</div>
+
+<!--Footer-->
+
+<footer class="container mt-4">
+    <div class="text-center">
+        <h6>BlockchainLabs &copy; 2024 PTY LTD</h6>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    async function fetchPrices() {
+        const url = 'https://api.coingecko.com/api/v3/coins/markets';
+        const params = '?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false';
+
+        try {
+            const response = await fetch(url + params);
+            const data = await response.json();
+
+            //Clear ticker 
+            const tickerWrapper = document.getElementById('ticker');
+            tickerWrapper.innerHTML = '';
+
+            // Adds data to ticker 
+            data.forEach(coin => {
+                const priceChangeClass = coin.price_change_percentage_24h >= 0 ? 'price-up' : 'price-down';
+                tickerWrapper.innerHTML += `
+                <div class="ticker-item">
+                    <img src="${coin.image}" alt="${coin.name}">
+                    <span>${coin.symbol.toUpperCase()}: </span>
+                    <span class="${priceChangeClass}">$${coin.current_price.toFixed(2)} (${coin.price_change_percentage_24h.toFixed(2)}%)</span>
+                </div>
+                `;
+            });
+        } catch (error) {
+            console.error('Error fetching prices:',error);
+        }
+    }
+    fetchPrices();
+    setInterval(fetchPrices, 60000);
+</script>
+</body>
+</html>

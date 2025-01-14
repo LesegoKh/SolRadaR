@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Token Metadata</title>
+    <!-- Solana Web3.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.0/dist/solana-web3.min.js" onload="initializeApp()"></script>
+</head>
+<body>
+    <h1>Solana Wallet Token Metadata</h1>
+
+    <form id="searchForm">
+        <label for="walletInput">Enter Wallet Address: </label>
+        <input type="text" id="walletInput" required />
+        <button type="submit">Fetch Wallet Data</button>
+    </form>
+
+    <div id="solBalance"></div>
+
+    <table id="coinsTable">
+        <thead>
+            <tr>
+                <th>Token Name</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Last Purchased</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Token rows will go here -->
+        </tbody>
+    </table>
+
+    <script>
+        function initializeApp() {
+            // Ensure Solana Web3.js is loaded
+            if (typeof solanaWeb3 === 'undefined') {
+                alert('Solana Web3.js is not loaded correctly. Please check your internet connection or CDN link.');
+                return;
+            }
+
+            // Setup the event listener for the form submission after the script is loaded
+            document.getElementById('searchForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const walletAddress = document.getElementById('walletInput').value.trim();
+                if (solanaWeb3.PublicKey.isOnCurve(walletAddress)) {
+                    fetchWalletData(walletAddress);
+                } else {
+                    alert('Invalid wallet address.');
+                }
+            });
+        }
+
+        async function fetchWalletData(walletAddress) {
+            const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
+            const publicKey = new solanaWeb3.PublicKey(walletAddress);
+
+            try {
+                // Fetch SOL balance
+                const solBalance = await connection.getBalance(publicKey);
+                document.getElementById('solBalance').innerHTML = `<h5>SOL Balance: ${solBalance / solanaWeb3.LAMPORTS_PER_SOL} SOL</h5>`;
+
+                // Fetch all token accounts owned by the wallet
+                const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {});
+                console.log("Token Accounts:", tokenAccounts);
+
+                // Process each token account
+                const memeCoins = [];
+                for (let account of tokenAccounts.value) {
+                    const tokenAmount = account.account.data.parsed.info.tokenAmount;
+                    const mintAddress = account.account.data.parsed.info.mint;
+
+                    // Fetch the metadata for this token from Pump.fun or another source
+                    const metadata = await fetchTokenMetadataFromPump(mintAddress);
+
+                    memeCoins.push({
+                        mintAddress: mintAddress,
+                        amount: tokenAmount.uiAmount,
+                        name: metadata ? metadata.name : 'Unknown Token',
+                        price: metadata ? metadata.price : 'Price not available',
+                    });
+                }
+
+                // Populate the table with meme coins
+                const tableBody = document.getElementById('coinsTable').querySelector('tbody');
+                tableBody.innerHTML = ''; // Clear existing rows
+                memeCoins.forEach(coin => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${coin.name}</td>
+                        <td>${coin.amount}</td>
+                        <td>$${coin.price}</td>
+                        <td>${new Date().toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error('Error fetching wallet data:', error);
+                alert('Error fetching wallet data. Please check the wallet address and try again.');
+            }
+        }
+
+        async function fetchTokenMetadataFromPump(mintAddress) {
+            const proxyUrl = 'http://localhost:3000/proxy/metadata/';
+            
+            try {
+                const response = await fetch('/.netlify/functions/proxy?mintAddress=123abc');
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Failed to fetch metadata:', error);
+                return null;
+            }
+        }
+        
+        
+        
+        
+        
+    </script>
+</body>
+</html>
