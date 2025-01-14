@@ -22,7 +22,7 @@
     <div id="transactions"></div>
 
     <script>
-        // Event listener for the form submission
+        
         document.getElementById('searchForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const walletAddress = document.getElementById('walletInput').value.trim();
@@ -33,28 +33,28 @@
             }
         });
 
-        // Fetch wallet data (balance in SOL and USD, and transaction history)
+        // Fetch wallet data 
         async function fetchWalletData(walletAddress) {
             const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'), 'confirmed');
             const publicKey = new solanaWeb3.PublicKey(walletAddress);
 
             try {
-                // Fetch SOL balance
+
                 const solBalance = await connection.getBalance(publicKey);
                 const solInLamports = solBalance / solanaWeb3.LAMPORTS_PER_SOL;
 
-                // Fetch USD price of SOL
+               
                 const solPrice = await fetchSolPriceInUSD();
                 const balanceInUSD = (solInLamports * solPrice).toFixed(2);
 
-                // Display balance
+               
                 document.getElementById('solBalance').innerHTML = `
                     <h3>Balance:</h3>
                     <p>${solInLamports.toFixed(2)} SOL</p>
                     <p>$${balanceInUSD} USD</p>
                 `;
 
-                // Fetch recent transactions
+                
                 const transactionHistory = await connection.getSignaturesForAddress(publicKey, { limit: 5 });
                 displayTransactions(transactionHistory);
 
@@ -64,7 +64,7 @@
             }
         }
 
-        // Fetch the current price of SOL in USD
+        
         async function fetchSolPriceInUSD() {
             try {
                 const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
@@ -76,7 +76,6 @@
             }
         }
 
-        // Display recent transactions
         function displayTransactions(transactions) {
             const transactionsDiv = document.getElementById('transactions');
             if (transactions.length === 0) {
